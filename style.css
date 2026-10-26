@@ -1,38 +1,131 @@
+/* Anvil Isles look, taken from the game's UI kit (Features/Shared/GameUI/GameUI.swift):
+   blue page gradient, morning sky header with clouds and a grass hill, gold rule,
+   pale cards with a navy outline under a gold title strip, Lilita One labels with a brown outline. */
 :root {
-  --accent: #B8501A; --accent-soft: #F6E1CC;
-  --ink: #2A2119; --subtle: #75655A;
-  --surface: #FBF4E6; --card: #FFFCF5; --hairline: #EADBC2;
+  --outline: #15233D;
+  --label-outline: #2B1A10;
+  --card-text: #1D2F52;
+  --chip-text: #2A4270;
+  --gold-rule: #E8B23A;
+  --gold-edge: #6B3A00;
+  --link: #22406F;
+  --game: "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --body: ui-rounded, "SF Pro Rounded", -apple-system, system-ui, "Segoe UI", sans-serif;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
+html { background: #203C70; }
 body {
-  font: 17px/1.65 -apple-system, system-ui, "Segoe UI", sans-serif;
-  color: var(--ink); background: var(--surface);
-  margin: 0; padding: 56px 20px;
+  margin: 0;
+  min-height: 100vh;
+  font: 500 17px/1.6 var(--body);
+  color: var(--card-text);
+  background: linear-gradient(#5A8FD0, #3F6CB0 30%, #2A4B86 70%, #203C70) fixed;
 }
-.wrap { max-width: 640px; margin: 0 auto; }
-.mark {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: var(--accent-soft); border: 1px solid var(--hairline);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 20px; color: var(--accent); font-size: 30px;
+
+/* The white label with the game's outline and drop, as in GameOutline. */
+.label {
+  font-family: var(--game);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: .01em;
+  text-shadow:
+    1.5px 0 0 var(--label-outline), -1.5px 0 0 var(--label-outline),
+    0 1.5px 0 var(--label-outline), 0 -1.5px 0 var(--label-outline),
+    1px 1px 0 var(--label-outline), -1px -1px 0 var(--label-outline),
+    1px -1px 0 var(--label-outline), -1px 1px 0 var(--label-outline),
+    0 3px 0 var(--label-outline);
 }
-h1, h2 { font-family: "Lilita One", Georgia, "Times New Roman", serif; font-weight: 400; }
-h1 { font-size: 34px; text-align: center; margin: 0 0 6px; text-wrap: balance; }
-h2 { font-size: 21px; margin: 34px 0 8px; letter-spacing: .01em; }
-.updated { text-align: center; color: var(--subtle); font-size: 14px; margin: 0; }
-.rule { width: 32px; height: 2px; background: var(--accent); border: 0; margin: 18px auto 28px; opacity: .55; }
-.lede { text-align: center; color: var(--subtle); margin: 0 0 12px; }
+
+/* Header: the sheet header's morning sky, clouds and hill, closed by the gold rule. */
+.sky {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(#FFF1D2, #BFE3FF 55%, #7FB5EA);
+  border-bottom: 3px solid var(--gold-rule);
+  padding: 28px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px));
+  text-align: center;
+}
+.sky::before, .sky::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+}
+.sky::before { inset: 0 0 auto 0; height: 129px; background-image: url(art/clouds.png); background-size: auto 129px; }
+.sky::after { left: 0; bottom: 0; width: 369px; height: 87px; background-image: url(art/hill.png); background-size: 369px 87px; }
+.sky a { position: relative; z-index: 1; display: inline-block; }
+.logo { display: block; width: min(240px, 62vw); height: auto; filter: drop-shadow(0 4px 0 rgba(13, 24, 48, .25)); }
+
+.wrap {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 28px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+h1 { margin: 0; font-size: clamp(30px, 7vw, 40px); line-height: 1.1; text-align: center; text-wrap: balance; }
+.updated, .lede { margin: 0; text-align: center; color: #fff; font-weight: 600; }
+.updated { font-size: 14px; opacity: .85; margin-top: -10px; }
+.lede { text-shadow: 0 1px 0 rgba(13, 24, 48, .5); }
+.lede a { color: #FFE27A; }
+
+/* GameCard: pale gradient, 3 pt navy outline, a dark drop below, gold header strip for the title. */
 .card {
-  background: var(--card); border: 1px solid var(--hairline);
-  border-radius: 8px; padding: 18px 22px; margin-top: 12px;
+  border: 3px solid var(--outline);
+  border-radius: 13px;
+  overflow: hidden;
+  background: linear-gradient(#FBFDFF, #E3EBF7);
+  box-shadow: 0 4px 0 rgba(21, 35, 61, .45), inset 0 -12px 12px -12px #C9D6EA;
 }
-p { margin: 0 0 14px; }
-p:last-child, ul:last-child { margin-bottom: 0; }
-ul { padding-left: 20px; margin: 0 0 14px; }
-li { margin-bottom: 8px; }
-.q { font-weight: 600; margin: 18px 0 4px; }
-.q:first-child { margin-top: 0; }
-.a { color: var(--subtle); margin: 0; }
-a { color: var(--accent); }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.foot { text-align: center; color: var(--subtle); font-size: 14px; margin-top: 44px; }
+.card h2 {
+  margin: 0;
+  padding: 8px 14px 9px;
+  font-size: 19px;
+  line-height: 1.25;
+  background: linear-gradient(#FFE27A, #F6C440 55%, #E9A01C);
+  border-bottom: 2px solid var(--gold-edge);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .5);
+}
+.card .in { padding: 14px 16px 16px; }
+.card p { margin: 0 0 12px; }
+.card p:last-child, .card ul:last-child { margin-bottom: 0; }
+.card ul { margin: 0 0 12px; padding-left: 20px; }
+.card li { margin-bottom: 8px; }
+.card li::marker { color: #E9A01C; }
+.card strong { font-weight: 800; }
+.q { font-weight: 800; margin: 16px 0 2px !important; }
+.q:first-child { margin-top: 0 !important; }
+a { color: var(--link); font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+a:focus-visible { outline: 3px solid #FFDC55; outline-offset: 2px; border-radius: 4px; }
+
+/* The kit's yellow button: gradient face, brown outline, darker bevel strip under it. */
+.button {
+  display: inline-block;
+  padding: 10px 20px 11px;
+  border: 3px solid var(--gold-edge);
+  border-radius: 12px;
+  background: linear-gradient(#FFDC55, #F3A116);
+  box-shadow: inset 0 -4px 0 #D9850C, 0 3px 0 rgba(21, 35, 61, .45);
+  font-size: 19px;
+  text-decoration: none;
+}
+.button:active { transform: translateY(2px); box-shadow: inset 0 -2px 0 #D9850C, 0 1px 0 rgba(21, 35, 61, .45); }
+.center { text-align: center; }
+
+/* Footer links as the kit's pale chips. */
+.foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid #8EA6C9;
+  background: #CFDCEF;
+  color: var(--chip-text);
+  font: 400 15px var(--game);
+  text-decoration: none;
+}
+.copy { margin: 0; text-align: center; color: #fff; opacity: .7; font-size: 13px; }
+
+@media (prefers-reduced-motion: reduce) { .button:active { transform: none; } }
